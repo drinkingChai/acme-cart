@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "DATABASE_URL=postgres://localhost/acmecart nodemon node_modules/mocha/bin/mocha test/*",
     "start:dev": "DATABASE_URL=postgres://localhost/acmecart nodemon server.js",
     "build:css": "node-sass -w assets/stylesheets/* -o public/stylesheets/",
     "start": "node server.js"
