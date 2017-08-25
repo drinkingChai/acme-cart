@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 const orders = require('./routes/orders');
+const conn = require('./db');
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use(orders);
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, ()=> {
-  console.log(`listening on port ${port}`);
-})
+conn.sync()
+  .then(()=> {
+    app.listen(port, ()=> {
+      console.log(`listening on port ${port}`);
+    })
+  })
