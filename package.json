@@ -1,0 +1,26 @@
+{
+  "name": "acme-cart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "DATABASE_URL=postgress://localhost/acmecart nodemon server.js",
+    "build:css": "node-sass -w assets/stylesheets/* -o public/stylesheets/",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "jquery": "^3.2.1",
+    "method-override": "^2.3.9",
+    "morgan": "^1.8.2",
+    "nunjucks": "^3.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0",
+    "node-sass": "^4.5.3"
+  }
+}
