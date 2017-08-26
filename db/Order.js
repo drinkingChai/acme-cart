@@ -4,15 +4,20 @@ const Order = conn.define('order', {
   isCart: {
     type: conn.Sequelize.BOOLEAN,
     defaultValue: true,
-    allowNull: false 
+    allowNull: false
   },
   address: {
-    type: conn.Sequelize.STRING,
-    set(val) {
-      this.setDataValue('isCart', false);
-      this.setDataValue('address', val);
-    }
+    type: conn.Sequelize.STRING
   }
 })
+
+Order.prototype.placeOrder = function (address) {
+  if (!address || !address.trim().length) throw new Error('address required');
+  return this.update({
+    isCart: false,
+    address
+  });
+};
+
 
 module.exports = Order;

@@ -8,4 +8,10 @@ const LineItem = conn.define('lineitem', {
   }
 });
 
+LineItem.prototype.addOne = function () {
+  return this.update({
+    quantity: this.quantity++
+  })
+};
+
 module.exports = LineItem;
