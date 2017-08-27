@@ -84,38 +84,42 @@ describe('Models', ()=> {
         foo = p1;
         bar = p2;
         baz = p3;
-        // return Promise.all([
-        //   LineItem.create({ productId: foo.id }),
-        //   LineItem.create({ productId: bar.id })
-        // ])
+        return Promise.all([
+          LineItem.create({ productId: foo.id }),
+          LineItem.create({ productId: bar.id })
+        ])
+      }).then(([l1, l2])=> {
+        line1 = l1;
+        line2 = l2;
+        return Order.create({});
+      }).then(order=> {
+        cart1 = order;
+        return Promise.all([
+          line1.setOrder(order),
+          line2.setOrder(order)
+        ])
       })
-      // }).then(([l1, l2])=> {
-      //   line1 = l1;
-      //   line2 = l2;
-      //   return Order.create({});
-      // }).then(order=> {
-      //   line1.setOrder(order);
-      //   line2.setOrder(order);
-      // })
     })
 
-    it('throws error if product doesnt exist', ()=> {
+    xit('throws error if product doesnt exist', ()=> {
       return Order.addProductToCart().catch(err=> {
         expect(err.message).to.equal('product not found');
       });
     })
 
-    it('adds a product to cart', ()=> {
-      return Order.addProductToCart(foo.id)
+    it('adds a new line to cart', ()=> {
+      return Order.addProductToCart(baz.id)
         .then(result=> {
-          expect(result[0] instanceof LineItem).to.be.true;
-          return result[0];
+          expect(result instanceof LineItem).to.be.true;
+          return result;
         }).then(newLI=> {
-          expect(newLI.productId).to.equal(foo.id);
+          expect(newLI.productId).to.equal(baz.id);
+          expect(newLI.quantity).to.equal(1);
           return Order.findOne({ id: newLI.orderId });
         }).then(order=> {
           expect(order).to.be.ok;
         })
+      return Order.addProductToCart(foo.id);
     })
 
   })
