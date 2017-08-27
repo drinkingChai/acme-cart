@@ -13,78 +13,47 @@ const sync = ()=> {
 // line items belong to order
 // order can have many line items
 LineItem.belongsTo(Product);
+Product.hasMany(LineItem);  // ex. to see how many orders of this was placed
 LineItem.belongsTo(Order);
-Order.hasMany(LineItem);
+Order.hasMany(LineItem); // ex. how many items in cart
 
 
-// updateFromRequestBody
-// addProductToCart
-// destroyLineItem
 Order.updateFromRequestBody = function(orderId, data) {
 
 }
 
 Order.addProductToCart = function(productId) {
-  // findOrCreate not working in pg@7 :/
-  let curOrder, curLI, curProduct;
+  // let curOrder, curLI, curProduct;
 
-  return Product.findOne({
-    where: { id: productId }
-  }).then(foundProduct=> {
-    // check for valid productId
-    if (!foundProduct) throw new Error('product not found');
-  }).then(()=> {
-    return Order.findOne({
-      // find the order that's not a cart
-      where: { isCart: true },
-      include: {
-        model: LineItem
-      }
+  /*
+    1. find the product by Id
+    2. find the order cart, if not, create one
+    3. find lineitem matching order, if not, create lineitem and associate?
+    4. increment
+  */
+
+  return Product.findOne({ where: { id: productId }})
+    .then(product=> {
+      if (!product) throw new Error('unknown product');
+
+      return Order.findOrCreate({
+        where: { isCart: true },
+        defaults: {},
+        include: {
+          model: LineItem,
+          // putting a where: { productId } if it doesn't exist, goes to error! "cannot get 0 of undefined"
+        }
+      })
+    }).spread((order, created)=> {
+      let liExists = order.lineitems.filter(li=> li.productId == productId);
+
+      if (!liExists.length) return LineItem.create({
+        productId,
+        quantity: 1,
+        orderId: order.id
+      })
+      return liExists[0].addOne();
     })
-  }).then(foundOrder=> {
-    // if it doesn't exist, make a new order
-    if (!foundOrder) return Order.create({});
-    return foundOrder;
-  }).then(order=> {
-    // see if a line item exists in that order
-    // if not, make a new line item with the product Id
-    let liExists = order.lineitems.filter(l=> l.productId == productId)
-    if (liExists.length) return liExists[0];
-    else return LineItem.create({ productId: productId });
-  }).then(lineitem=> {
-    return lineitem.addOne();
-  })
-
-  // more verbose?
-  // return Product.findOne({
-  //   where: { id: productId }
-  // }).then(foundProduct=> {
-  //   if (!foundProduct) throw new Error('product not found');
-  //   curProduct = foundProduct;
-  //   return Order.findOne({
-  //     where: { isCart: true }
-  //   })
-  // }).then(foundCart=> {
-  //   if (foundCart) return foundCart;
-  //   return Order.create({})
-  // }).then(order=> {
-  //   curOrder = order;
-  //   return LineItem.findOne({
-  //     where: {
-  //       productId,
-  //       orderId: order.id
-  //     }
-  //   })
-  // }).then(foundLI=> {
-  //   if (foundLI) return foundLI.addOne();
-  //   return LineItem.create({});
-  // }).then(lineItem=> {
-  //   curLI = lineItem;
-  //   return Promise.all([
-  //     lineItem.setOrder(curOrder),
-  //     lineItem.setProduct(curProduct)
-  //   ])
-  // })
 }
 
 Order.destroyLineItem = function(orderId, lineItemId) {
