@@ -54,6 +54,20 @@ Order.destroyLineItem = function(orderId, lineItemId) {
   })
 }
 
+Order.getViewModel = function() {
+  let orders;
+  return Order.findAll({
+    include: [
+      { model: LineItem }
+    ]
+  }).then(allOrders=> {
+    orders = allOrders;
+    return Product.findAll()
+  }).then(products=> {
+    return { orders, products }
+  })
+}
+
 
 module.exports = {
   sync,
