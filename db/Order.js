@@ -19,5 +19,13 @@ Order.prototype.placeOrder = function (data) {
   });
 };
 
+Order.findEmptyCart = function() {
+  return Order.findOne({ where: { isCart: true }})
+  .then(found=> {
+    if (found) return found;
+    return Order.create();
+  })
+}
+
 
 module.exports = Order;
