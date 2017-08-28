@@ -154,7 +154,8 @@ describe('Models', ()=> {
     it('gets view model', ()=> {
       return Order.getViewModel()
       .then(result=> {
-        expect(result.orders.length).to.equal(2);
+        expect(result.cart).to.be.ok;
+        expect(result.orders.length).to.equal(1);
         expect(result.products.length).to.equal(3);
 
         let completedOrder = result.orders.filter(o=> !o.isCart)[0];
