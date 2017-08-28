@@ -55,8 +55,6 @@ Order.destroyLineItem = function(orderId, lineItemId) {
 }
 
 
-
-
 module.exports = {
   sync,
   models: {
