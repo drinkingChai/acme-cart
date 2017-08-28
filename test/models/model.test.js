@@ -128,4 +128,43 @@ describe('Models', ()=> {
     })
   })
 
+  describe('generate view model', ()=> {
+    let fooline, barline, bazline, order1, cart;
+    beforeEach(()=> {
+      return Order.addProductToCart(foo.id)
+      .then(()=> {
+        return Order.addProductToCart(bar.id);
+      }).then(line=> {
+        barline = line;
+        return Order.addProductToCart(foo.id);
+      }).then(line=> {
+        fooline = line;
+        return Order.updateFromRequestBody(1, address);
+      }).then(order=> {
+        order1 = order;
+        return Order.addProductToCart(baz.id);
+      }).then(line=> {
+        bazline = line;
+        return Order.findOne({ where: { isCart: true }})
+      }).then(order=> {
+        cart = order;
+      })
+    })
+
+    it('gets view model', ()=> {
+      return Order.getViewModel()
+      .then(result=> {
+        expect(result.orders.length).to.equal(2);
+        expect(result.products.length).to.equal(3);
+
+        let completedOrder = result.orders.filter(o=> !o.isCart)[0];
+        expect(completedOrder.lineitems.length).to.equal(2);
+
+        expect(completedOrder.lineitems.map(l => l.id)).to.include(fooline.id);
+        expect(completedOrder.lineitems.map(l => l.id)).to.include(barline.id);
+        expect(completedOrder.lineitems.map(l => l.id)).to.not.include(bazline.id);
+      })
+    })
+  })
+
 })
