@@ -14,7 +14,7 @@ Order.hasMany(LineItem);
 
 //
 Order.updateFromRequestBody = function(orderId, data) {
-  if (!data.address.length) return Promise.reject(new Error('address required'));
+  if (!data || !data.address || !data.address.trim().length) return Promise.reject(new Error('address required'));
   return Order.findOne({ where: { id: orderId }})
   .then(order=> order.finalize(data.address))
 }
