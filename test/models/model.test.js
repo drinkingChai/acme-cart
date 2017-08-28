@@ -101,14 +101,37 @@ describe('Models', ()=> {
       })
     })
 
-    xit('throws error if product doesnt exist', ()=> {
-      return Order.addProductToCart().catch(err=> {
-        expect(err.message).to.equal('product not found');
+    it('throws error if product doesnt exist', ()=> {
+      return Order.addProductToCart(65)
+      .then(lineItem=> {
+        expect(lineItem).to.be.null;
+      })
+      .catch(err=> {
+        expect(err.message).to.equal('unknown product');
       });
     })
 
     it('adds a new line to cart', ()=> {
-      return Order.addProductToCart(baz.id);
+      return Order.addProductToCart(baz.id)
+      .then(lineItem=> {
+        expect(lineItem.orderId).to.equal(cart1.id);
+        expect(lineItem.productId).to.equal(baz.id);
+        expect(lineItem.quantity).to.equal(1);
+      })
+    })
+
+    it('adds to existing line in cart', ()=> {
+      return Order.addProductToCart(foo.id)
+      .then(lineItem=> {
+        expect(lineItem.orderId).to.equal(cart1.id);
+        expect(lineItem.productId).to.equal(foo.id);
+        expect(lineItem.quantity).to.equal(2);
+        expect(lineItem.quantity).to.not.equal(1);
+      })
+    })
+
+    xit('deletes an item from cart', ()=> {
+      
     })
 
     xit('tests', ()=> {
