@@ -14,6 +14,15 @@ LineItem.prototype.addOne = function () {
   })
 };
 
+LineItem.prototype.removeOne = function() {
+  return this.update({
+    quantity: --this.quantity
+  }).then(lineitem=> {
+    if (lineitem.quantity <= 0) return lineitem.destroy();
+    return lineitem;
+  })
+};
+
 LineItem.createOne = function(order, product) {
   // must have associations
   return LineItem.create()

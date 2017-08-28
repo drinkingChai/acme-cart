@@ -11,7 +11,7 @@ const Order = conn.define('order', {
   }
 })
 
-Order.prototype.placeOrder = function (data) {
+Order.prototype.finalize = function (data) {
   if (!data || !data.address || !data.address.trim().length) throw new Error('address required');
   return this.update({
     isCart: false,
