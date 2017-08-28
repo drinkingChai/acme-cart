@@ -19,7 +19,7 @@ Order.prototype.placeOrder = function (data) {
   });
 };
 
-Order.findEmptyCart = function() {
+Order.findCart = function() {
   return Order.findOne({ where: { isCart: true }})
   .then(found=> {
     if (found) return found;

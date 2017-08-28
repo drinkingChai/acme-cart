@@ -25,30 +25,28 @@ describe('Models', ()=> {
   })
 
   describe('Order', ()=> {
-    it('creates a new cart', ()=> {
-    });
-
-    xit(`returns error 'address required' if there's no address`, ()=> {
-    })
-
-    xit('places an order with an address', ()=> {
-    })
-
-    xit('destroys cart without any items', ()=> {
+    it('finds cart or creates a new cart', ()=> {
+      return Order.findCart()
+      .then(cart=> {
+        expect(cart).to.be.ok;
+        return LineItem.findAll({ where: { orderId: cart.id }})
+      }).then(lineitems=> {
+        expect(lineitems.length).to.equal(0);
+      })
     });
   })
 
   xdescribe('LineItem', ()=> {
-    it('throws error if product doesnt exist', ()=> {
-    })
+  })
 
-    it('adds a new line to cart', ()=> {
-    })
-
-    it('adds to existing line in cart', ()=> {
-    })
-
-    it('deletes an item from cart', ()=> {
+  describe('Product and Cart', ()=> {
+    it('adds a product to cart', ()=> {
+      return Order.addProductToCart(foo.id)
+      .then(lineitem=> {
+        expect(lineitem.productId).to.equal(foo.id);
+        expect(lineitem.productId).to.not.equal(bar.id);
+        expect(lineitem.orderId).to.equal(1);
+      })
     })
   })
 

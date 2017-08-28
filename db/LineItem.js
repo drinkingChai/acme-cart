@@ -14,4 +14,18 @@ LineItem.prototype.addOne = function () {
   })
 };
 
+LineItem.createOne = function(order, product) {
+  // must have associations
+  return LineItem.create()
+  .then(lineitem=> {
+    return lineitem.setOrder(order);
+  }).then(lineitem=> {
+    return lineitem.setProduct(product);
+  })
+}
+
+LineItem.lineExists = function(orderId, productId) {
+  return LineItem.findOne({ where: { orderId, productId }});
+}
+
 module.exports = LineItem;
