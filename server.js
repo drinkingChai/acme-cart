@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const nunjucks = require('nunjucks');
+const path = require('path');
 const orders = require('./routes/orders');
 const conn = require('./db');
 const seed = require('./seed');
@@ -15,6 +16,7 @@ app.engine('html', nunjucks.render);
 nunjucks.configure('views', { noCache: true });
 
 app.use(morgan('dev'));
+app.use(express.static(path.resolve('public')))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 

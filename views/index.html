@@ -3,41 +3,55 @@
 {% block content %}
 
 <!-- error -->
-<div>{{ error }}</div>
 
 <!-- products -->
-<div>
+<div class="col-7 products">
 {% for product in data.products %}
   <form action="/{{product.id}}/lineItems" method="POST">
-    <li>{{ product.name }}</li>
-    <button name="productId" value="{{product.id}}">Add One!</button>
+    <span>{{ product.name }}</span>
+    <button class="btn btn-primary" name="productId" value="{{product.id}}">Add One!</button>
   </form>
 {% endfor %}
 </div>
 
-<!-- cart -->
-{% if data.cart %}
-<div>
-  <form action="/{{data.cart.id}}?_method=PUT" method="POST">
+<div class="col-4 col-offset-1">
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <!-- cart -->
+  {% if data.cart %}
+  <div class="cart">
     {% for lineitem in data.cart.lineitems %}
-      <li>{{ lineitem.product.name }} {{ lineitem.quantity }}</li>
+    <!-- <li> -->
+      <form action="/{{data.cart.id}}/lineItems/{{lineitem.id}}?_method=DELETE" method="POST">
+        <span>{{ lineitem.product.name }}</span>
+        <span>{{ lineitem.quantity }}</span>
+        <button class="btn">&#10005;</button>
+      </form>
+    <!-- </li> -->
     {% endfor %}
-    <input type="text" name="address"/>
-    <input type="submit" name="" value="Buy all the things!"/>
-  </form>
-</div>
-{% endif %}
 
-<!-- orders -->
-<div>
-{% for order in data.orders %}
-  <p>{{ order.address }}</p>
-  {% for lineitem in order.lineitems %}
-  <li>{{ lineitem.product.name }} {{ lineitem.quantity }}</li>
+    <form action="/{{data.cart.id}}?_method=PUT" method="POST">
+      <label for="address">Address:</label>
+      <input type="text" name="address"/>
+      <input type="submit" name="" value="Buy all the things!"/>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- orders -->
+  <div class="orders">
+  {% for order in data.orders %}
+    <div>
+      <h3>Delivered to: {{ order.address }}</h3>
+      {% for lineitem in order.lineitems %}
+        <li>{{ lineitem.product.name }} x {{ lineitem.quantity }}</li>
+      {% endfor %}
+      <hr>
+    </div>
   {% endfor %}
-  <hr>
-{% endfor %}
+  </div>
 </div>
-
 
 {% endblock %}

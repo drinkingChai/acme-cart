@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "DATABASE_URL=postgres://localhost/acmecart nodemon server.js",
-    "build:css": "node-sass -w assets/stylesheets/* -o public/stylesheets/",
+    "build:css": "node-sass -w assets/stylesheets/ -o public/stylesheets/",
     "start": "node server.js"
   },
   "author": "",

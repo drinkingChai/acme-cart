@@ -1,0 +1,14 @@
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+
+@mixin make-media-min($width) {
+  @media (min-width: $width) { @content; }
+}
+@mixin make-media-max($width) {
+  @media (max-width: $width) { @content; }
+}
+
+@mixin make-media($min, $max) {
+  @media (min-width: $min) and (max-width: $max)  { @content; }
+}

@@ -2,14 +2,22 @@
 <html>
   <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="stylesheet/style.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
 
-  <h1>Acme Cart!</h1>
+  <header class="col-12 text-center">
+    <h1>Quesadillas dona Acme</h1>
+  </header>
 
-  {% block content %}
-  {% endblock %}
+  <main class="col-6 col-offset-3">
+    <div class="row">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
 
   </body>
 </html>

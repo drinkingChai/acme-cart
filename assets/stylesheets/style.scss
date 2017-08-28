@@ -1,1 +1,76 @@
 // test
+@import "_colors.scss";
+@import "_grid.scss";
+@import "_text.scss";
+
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Open+Sans');
+
+/*
+  font-family: 'Merriweather', serif;
+  font-family: 'Open Sans', sans-serif;
+*/
+
+* { font-family: 'Open Sans', sans-serif; font-size: 1em; }
+h1, h2, h3 { font-family: 'Merriweather', serif; }
+h1 { font-size: 3em; }
+h3 { font-size: 1.1em; }
+
+header {
+  height: 15vh;
+  background-color: $primary;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  & h1 {
+    align-self: center;
+    color: $white;
+  }
+}
+
+.btn {
+  padding: 0.5em;
+}
+.btn-primary {
+  background-color: $secondary;
+}
+
+.products, .cart {
+  & form {
+    padding: 0.2em 0;
+    border-bottom: solid 1px $gray;
+  }
+
+  & form span {
+    display: inline-block;
+    width: 70%;
+  }
+
+  & form button {
+    display: inline-block;
+    width: 29%;
+  }
+}
+
+.cart {
+  padding: 1em 0;
+  & form button {
+    width: 10%;
+  }
+}
+
+.orders {
+  margin-bottom: 1em;
+
+  & h3 {
+    margin-bottom: 0.5em;
+  }
+}
+
+.error {
+  background-color: $primary;
+  color: $white;
+  padding: 0.5em;
+
+
+}
