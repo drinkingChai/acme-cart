@@ -7,75 +7,11 @@ const Order = db.models.Order;
 
 describe('Models', ()=> {
 
+  let foo, bar, baz, line1, line2, cart1,
+    address = `123 awesome place, NY 12045`;
   beforeEach(()=> {
-    return db.sync();
-  })
-
-  describe('exist', ()=> {
-    it('Product', ()=> {
-      expect(Product).to.be.ok;
-    })
-
-    it('LineItem', ()=> {
-      expect(Product).to.be.ok;
-    })
-
-    it('Order', ()=> {
-      expect(Product).to.be.ok;
-    })
-  })
-
-  describe('creates and destroys', ()=> {
-    let p1, l1;
-    it('creates a new Product, LineItem, and Order', ()=> {
-      return Product.create({
-        name: "Test product"
-      }).then(newProduct=> {
-        p1 = newProduct
-        return LineItem.create({
-          quantity: 4
-        })
-      }).then(newLineItem=> {
-        l1 = newLineItem;
-        return Order.create({})
-      }).then(newOrder=> {
-        expect(p1).to.be.ok;
-        expect(l1).to.be.ok;
-        expect(newOrder).to.be.ok;
-      })
-    })
-  })
-
-  describe('update Order', ()=> {
-    it('deletes an order with 0 items in cart', ()=> {
-
-    })
-
-    it('returns error when address is empty', ()=> {
-      return Order.create({})
-        .then(newOrder=> {
-          return newOrder.placeOrder()
-        }).catch(err=> {
-          expect(err.message).to.equal('address required')
-        })
-    })
-
-    it('succeeds', ()=> {
-      let address = '123 awesome place, cp';
-      return Order.create({})
-        .then(newOrder=> {
-          return newOrder.placeOrder(address)
-        }).then(finalized=> {
-          expect(finalized.isCart).to.equal(false);
-          expect(finalized.address).to.equal(address);
-        })
-    })
-  })
-
-  describe('update LineItem', ()=> {
-
-    let foo, bar, baz, line1, line2, cart1;
-    beforeEach(()=> {
+    return db.sync()
+    .then(()=> {
       return Promise.all([
         Product.create({ name: 'Foo' }),
         Product.create({ name: 'Bar' }),
@@ -100,7 +36,43 @@ describe('Models', ()=> {
         ])
       })
     })
+  })
 
+  describe('exist', ()=> {
+    it('Product', ()=> {
+      expect(Product).to.be.ok;
+    })
+
+    it('LineItem', ()=> {
+      expect(Product).to.be.ok;
+    })
+
+    it('Order', ()=> {
+      expect(Product).to.be.ok;
+    })
+  })
+
+  describe('update Order', ()=> {
+    it('destroys cart without any items', ()=> {
+      return Order.addProductToCart(baz.id)
+      .then(()=> {
+        return Promise.all([
+          Order.destroyLineItem(cart1.id, foo.id),
+          Order.destroyLineItem(cart1.id, bar.id),
+          Order.destroyLineItem(cart1.id, baz.id)
+        ])
+      }).then(()=> {
+        return Order.findOne({ where: { id: cart1.id }})
+      }).then(order=> {
+        expect(order).to.be.null;
+        return LineItem.findAll();
+      }).then(lineitems=> {
+        expect(lineitems.length).to.equal(0);
+      })
+    });
+  })
+
+  describe('update LineItem', ()=> {
     it('throws error if product doesnt exist', ()=> {
       return Order.addProductToCart(65)
       .then(lineItem=> {
@@ -130,8 +102,14 @@ describe('Models', ()=> {
       })
     })
 
-    xit('deletes an item from cart', ()=> {
-      
+    it('deletes an item from cart', ()=> {
+      return Order.destroyLineItem(cart1.id, foo.id)
+      .then(()=> {
+        return cart1.getLineitems();
+      }).then(lineitems=> {
+        let itemIds = lineitems.map(l=> l.id);
+        expect(itemIds).to.not.include(foo.id);
+      })
     })
 
     xit('tests', ()=> {
@@ -141,6 +119,27 @@ describe('Models', ()=> {
       console.log('order getLineitems', cart1.getLineitems);
     })
 
+  })
+
+  describe('places an order', ()=> {
+    it(`returns error 'address required' if there's no address`, ()=> {
+      return Order.updateFromRequestBody(cart1.id)
+      .then(order=> {
+        expect(order).to.be.null;
+      }).catch(err=> {
+        expect(err.message).to.equal('address required')
+      })
+    })
+
+    it('places an order with an address', ()=> {
+      return Order.updateFromRequestBody(cart1.id, { address })
+      .then(order=> {
+        expect(order.isCart).to.be.false;
+        expect(order.address).to.equal(address);
+      }).catch(err=> {
+        expect(err).to.be.null;
+      })
+    })
   })
 
 })
