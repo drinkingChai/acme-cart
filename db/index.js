@@ -14,9 +14,9 @@ Order.hasMany(LineItem);
 
 //
 Order.updateFromRequestBody = function(orderId, data) {
-  if (!data || !data.address || !data.address.trim().length) throw new Error('address required');
+  if (!data.address.length) return Promise.reject(new Error('address required'));
   return Order.findOne({ where: { id: orderId }})
-  .then(order=> order.finalize(data.address));
+  .then(order=> order.finalize(data.address))
 }
 
 Order.addProductToCart = function(productId) {

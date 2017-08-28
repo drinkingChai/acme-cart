@@ -3,11 +3,16 @@ const app = require('express').Router();
 
 module.exports = app;
 
-app.get('/', (req, res, next)=> {
+app.use((req, res, next)=> {
   Order.getViewModel()
   .then(data=> {
-    res.render('index', { data });
-  }).catch(next);
+    res.locals.data = data;
+    next();
+  })
+})
+
+app.get('/', (req, res, next)=> {
+  res.render('index');
 })
 
 app.put('/:id', (req, res, next)=> {

@@ -2,12 +2,18 @@
 
 {% block content %}
 
+<!-- error -->
+<div>{{ error }}</div>
+
+<!-- products -->
+<div>
 {% for product in data.products %}
   <form action="/{{product.id}}/lineItems" method="POST">
     <li>{{ product.name }}</li>
     <button name="productId" value="{{product.id}}">Add One!</button>
   </form>
 {% endfor %}
+</div>
 
 <!-- cart -->
 {% if data.cart %}
