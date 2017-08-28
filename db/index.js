@@ -37,19 +37,18 @@ Order.addProductToCart = function(productId) {
 }
 
 Order.destroyLineItem = function(orderId, lineItemId) {
-  let cart;
   return LineItem.findOne({
     where: { id: lineItemId, orderId }
   }).then(lineitem=> {
     return lineitem.destroy();
   }).then(()=> {
-    return Order.findOne({ where: { id: orderId }})
+    return Order.findOne({
+      where: { id: orderId },
+      include: [{ model: LineItem }]
+    })
   }).then(order=> {
-    cart = order;
-    return order.getLineitems();
-  }).then(items=> {
-    if (!items.length) return cart.destroy();
-    return cart;
+    if (!order.lineitems.length) return order.destroy();
+    return order;
   })
 }
 
