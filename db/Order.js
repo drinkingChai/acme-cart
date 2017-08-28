@@ -11,11 +11,10 @@ const Order = conn.define('order', {
   }
 })
 
-Order.prototype.finalize = function (data) {
-  if (!data || !data.address || !data.address.trim().length) throw new Error('address required');
+Order.prototype.finalize = function (address) {
   return this.update({
     isCart: false,
-    address: data.address
+    address
   });
 };
 

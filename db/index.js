@@ -12,12 +12,11 @@ LineItem.belongsTo(Product);
 LineItem.belongsTo(Order);
 Order.hasMany(LineItem);
 
-// helpers
-
 //
 Order.updateFromRequestBody = function(orderId, data) {
+  if (!data || !data.address || !data.address.trim().length) throw new Error('address required');
   return Order.findOne({ where: { id: orderId }})
-  .then(order=> order.finalize(data));
+  .then(order=> order.finalize(data.address));
 }
 
 Order.addProductToCart = function(productId) {
@@ -58,13 +57,17 @@ Order.getViewModel = function() {
   let orders;
   return Order.findAll({
     include: [
-      { model: LineItem }
+      { model: LineItem,
+        include: [ { model: Product } ]
+      }
     ]
   }).then(allOrders=> {
     orders = allOrders;
     return Product.findAll()
   }).then(products=> {
-    return { orders, products }
+    let cart = orders.filter(o=> o.isCart)[0];
+    orders = orders.filter(o=> !o.isCart);
+    return { cart, orders, products }
   })
 }
 
