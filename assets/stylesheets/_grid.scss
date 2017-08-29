@@ -129,23 +129,28 @@ hr {
   color: $primary;
   background-color: $primary;
   border-color: $primary;
+  border-style: solid;
   border-width: 1px;
 }
 
 // buttons * component *
 .btn {
   padding: 0.7em;
+  font-size: 1em;
   background-color: $white;
   border: 0;
   cursor: pointer;
   border-radius: 2px;
 
-  &-primary { background-color: $secondary; }
-  &-secondary { background-color: $primary; }
+  border: solid 1px $gray;
 
-  &-round {
-    border-radius: 100%
-    // padding-left: 1em;
+  &-primary {
+    background-color: $secondary;
+    border-color: transparent;
+  }
+  &-secondary {
+    background-color: $primary;
+    border-color: transparent;
   }
 }
 
@@ -189,22 +194,33 @@ $view-height: create-vh();
     @include make-media-min($breakpoint-lg) { @include make-col-offset($i); };
   }
   .col-md-#{$i} {
-    // @include make-media-max($breakpoint-lg) { @include make-col($i); };
     @include make-media($breakpoint-md, $breakpoint-lg) { @include make-col($i); };
   }
   .col-md-offset-#{$i} {
-    // @include make-media-max($breakpoint-lg) { @include make-col-offset($i); };
     @include make-media($breakpoint-md, $breakpoint-lg) { @include make-col-offset($i); };
   }
   .col-sm-#{$i} {
-    @include make-media(0px, $breakpoint-md) {
+    @include make-media($breakpoint-sm, $breakpoint-md) {
+      @include make-col($i);
+      margin-bottom: 1.3em;
+      // padding-left: 0;
+    };
+  }
+  .col-sm-offset-#{$i} {
+    @include make-media($breakpoint-sm, $breakpoint-md) {
+      @include make-col-offset($i);
+      // padding-left: 0;
+    };
+  }
+  .col-xs-#{$i} {
+    @include make-media(0px, $breakpoint-sm) {
       @include make-col($i);
       margin-bottom: 1.3em;
       padding-left: 0;
     };
   }
-  .col-sm-offset-#{$i} {
-    @include make-media(0px, $breakpoint-md) {
+  .col-xs-offset-#{$i} {
+    @include make-media(0px, $breakpoint-sm) {
       @include make-col-offset($i);
       padding-left: 0;
     };

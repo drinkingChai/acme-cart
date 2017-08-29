@@ -1,76 +1,69 @@
 // test
+@import "_reset.scss";
 @import "_colors.scss";
 @import "_grid.scss";
 @import "_text.scss";
 
-@import url('https://fonts.googleapis.com/css?family=Merriweather|Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Lato');
 
 /*
-  font-family: 'Merriweather', serif;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-family: 'Lato', sans-serif;
 */
 
-* { font-family: 'Open Sans', sans-serif; font-size: 1em; }
-h1, h2, h3 { font-family: 'Merriweather', serif; }
+html { font-size: 16px; }
+body { font-size: 100%; }
+
+* { font-family: 'Lato', sans-serif; }
+h1, h2, h3, h4 {   font-family: 'Gloria Hallelujah', cursive; }
 h1 { font-size: 3em; }
-h3 { font-size: 1.1em; }
+h2 { font-size: 2em; }
+h3 { font-size: 1.5em; }
+h4 { font-size: 1.1em;}
 
 header {
-  height: 15vh;
-  background-color: $primary;
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  display: block;
+  padding: 2em;
+  margin-bottom: 1em;
 
-  & h1 {
-    align-self: center;
-    color: $white;
+  & h2 {
+    margin-bottom: 1em;
   }
 }
 
-.btn {
-  padding: 0.5em;
-}
-.btn-primary {
-  background-color: $secondary;
-}
-
+// li template
 .products, .cart {
-  & form {
-    padding: 0.2em 0;
-    border-bottom: solid 1px $gray;
-  }
+  border: solid 1px $silver;
+  border-radius: 3px;
+  padding: 0;
 
-  & form span {
-    display: inline-block;
-    width: 70%;
-  }
+  & li {
+    list-style-type: none;
+    padding: 0.3em 1em;
 
-  & form button {
-    display: inline-block;
-    width: 29%;
+    & form {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &:not(:last-child) {
+      border-bottom: solid 1px $silver;
+    }
   }
 }
 
-.cart {
-  padding: 1em 0;
-  & form button {
-    width: 10%;
-  }
+li.address form {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart input[type=text] {
+  width: 100%;
 }
 
 .orders {
-  margin-bottom: 1em;
+  padding: 1em 0;
 
-  & h3 {
-    margin-bottom: 0.5em;
-  }
-}
-
-.error {
-  background-color: $primary;
-  color: $white;
-  padding: 0.5em;
-
-
+  & h4 { padding-bottom: 0.5em; }
 }
