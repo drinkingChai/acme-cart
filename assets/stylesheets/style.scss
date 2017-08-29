@@ -23,12 +23,9 @@ h4 { font-size: 1.1em;}
 
 header {
   display: block;
-  padding: 2em;
-  margin-bottom: 1em;
-
-  & h2 {
-    margin-bottom: 1em;
-  }
+  padding: 2em 0;
+  background-color: $primary;
+  color: $white;
 }
 
 // li template
@@ -53,6 +50,8 @@ header {
   }
 }
 
+.cart { padding-right: 0; }
+
 li.address form {
   display: flex;
   flex-direction: column;
@@ -63,7 +62,7 @@ li.address form {
 }
 
 .orders {
-  padding: 1em 0;
+  padding: 0;
 
   & h4 { padding-bottom: 0.5em; }
 }

@@ -806,10 +806,9 @@ h4 {
 
 header {
   display: block;
-  padding: 2em;
-  margin-bottom: 1em; }
-  header h2 {
-    margin-bottom: 1em; }
+  padding: 2em 0;
+  background-color: #ef5350;
+  color: #fff; }
 
 .products, .cart {
   border: solid 1px #DDDDDD;
@@ -825,6 +824,9 @@ header {
     .products li:not(:last-child), .cart li:not(:last-child) {
       border-bottom: solid 1px #DDDDDD; }
 
+.cart {
+  padding-right: 0; }
+
 li.address form {
   display: flex;
   flex-direction: column; }
@@ -833,7 +835,7 @@ li.address form {
   width: 100%; }
 
 .orders {
-  padding: 1em 0; }
+  padding: 0; }
   .orders h4 {
     padding-bottom: 0.5em; }
 
