@@ -836,3 +836,6 @@ li.address form {
   padding: 1em 0; }
   .orders h4 {
     padding-bottom: 0.5em; }
+
+.error {
+  background-color: #ff867c; }

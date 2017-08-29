@@ -17,14 +17,15 @@
 </div>
 
 <div class="col-3 col-md-3 col-sm-4 col-xs-10 col-xs-offset-1">
-  {% if error %}
-    <div class="error">{{ error }}</div>
-  {% endif %}
-
   <!-- cart -->
   {% if data.cart %}
   <div class="cart">
+    {% if error %}
+    <li class="error">{{ error }}</li>
+    {% endif %}
+
     <li class="text-center"><h4>Cart!</h4></li>
+    
     {% for lineitem in data.cart.lineitems %}
     <li>
       <form action="/{{data.cart.id}}/lineItems/{{lineitem.id}}?_method=DELETE" method="POST">
